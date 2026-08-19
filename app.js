@@ -274,8 +274,8 @@ function selectTube(tubeIndex) {
   const fromIndex = selectedTubeIndex;
   const move = getValidMove(tubes, fromIndex, tubeIndex);
   if (!move) {
-    selectedTubeIndex = tubes[tubeIndex].length > 0 ? tubeIndex : fromIndex;
-    registerMistake(tubeIndex, "そこには移せません。");
+    selectedTubeIndex = null;
+    registerMistake(tubeIndex, "そこには移せません。お手つきとして記録しました");
     return;
   }
 
@@ -373,6 +373,7 @@ window.waterSortGame = {
   getPalette: () => [...currentPalette],
   getMoveCount: () => moveCount,
   getMistakeCount: () => mistakeCount,
+  getSelectedTubeIndex: () => selectedTubeIndex,
   calculateFinalScore,
   getHistoryLength: () => history.length,
   selectTube,

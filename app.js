@@ -208,10 +208,7 @@ function renderBoard() {
       tubeElement.append(layer);
     });
 
-    const number = document.createElement("span");
-    number.className = "tube-number";
-    number.textContent = String(tubeIndex + 1).padStart(2, "0");
-    button.append(tubeElement, number);
+    button.append(tubeElement );
     boardElement.append(button);
   });
 
@@ -259,7 +256,7 @@ function selectTube(tubeIndex) {
       return;
     }
     selectedTubeIndex = tubeIndex;
-    setStatus(`試験管${tubeIndex + 1}を選択中。移動先を選んでください`);
+    setStatus(``);
     renderBoard();
     return;
   }

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#eff8fb">
+  <title>Water Sort Puzzle</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game-shell">
+    <header class="game-header">
+      <div>
+        <p class="eyebrow">COLOR LAB</p>
+        <h1>Water Sort Puzzle EX</h1>
+        <p class="instructions">同じ色の液体を、1本の試験管にそろえましょう。</p>
+      </div>
+      <div class="game-stats" aria-live="polite">
+        <div class="stat-counter">
+          <span>MOVE</span>
+          <strong id="move-count">0</strong>
+        </div>
+      </div>
+    </header>
+
+    <section class="game-card" aria-label="ウォーターソートパズル">
+      <div id="status" class="status" aria-live="polite">移動元の試験管を選んでください</div>
+      <div id="tube-board" class="tube-board" role="group" aria-label="試験管一覧"></div>
+
+      <div class="controls" aria-label="ゲーム操作">
+        <button id="undo-button" class="control-button" type="button" disabled>一手戻す</button>
+        <button id="restart-button" class="control-button" type="button">リスタート</button>
+        <button id="new-game-button" class="control-button primary" type="button">NEW GAME</button>
+      </div>
+    </section>
+
+    <p class="tip">空の試験管、または一番上が同じ色の試験管へ移せます。</p>
+  </main>
+
+  <div id="clear-dialog" class="clear-dialog" role="dialog" aria-modal="true" aria-labelledby="clear-title" hidden>
+    <div class="clear-panel">
+      <span class="clear-mark" aria-hidden="true">✓</span>
+      <h2 id="clear-title">CLEAR!</h2>
+      <p><strong id="clear-moves">0</strong> 手で完成しました</p>
+      <div class="clear-score">
+        <span>FINAL SCORE</span>
+        <strong id="clear-score">0</strong>
+      </div>
+      <p id="score-breakdown" class="score-breakdown"></p>
+      <button id="clear-new-game" class="control-button primary" type="button">次の問題へ</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

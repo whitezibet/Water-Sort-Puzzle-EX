@@ -1,0 +1,492 @@
+:root {
+  --ink: #18323d;
+  --muted: #657b84;
+  --paper: #ffffff;
+  --line: #c9dce2;
+  --accent: #1688a5;
+  --accent-dark: #0c647c;
+  --shadow: 0 18px 50px rgb(30 76 91 / 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 15% 10%, rgb(255 255 255 / 0.95), transparent 34%),
+    linear-gradient(150deg, #edf8fb 0%, #f8fbf7 58%, #e9f4f6 100%);
+  font-family: system-ui, -apple-system, "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+}
+
+button {
+  font: inherit;
+}
+
+.game-shell {
+  width: min(960px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: clamp(28px, 5vw, 60px) 0 28px;
+}
+
+.game-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.eyebrow {
+  margin: 0 0 6px;
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2rem, 5vw, 3.6rem);
+  font-weight: 750;
+  letter-spacing: -0.045em;
+  line-height: 1;
+}
+
+.instructions {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: clamp(0.88rem, 2vw, 1rem);
+}
+
+.game-stats {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+.stat-counter {
+  flex: 0 0 auto;
+  min-width: 78px;
+  padding: 9px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: rgb(255 255 255 / 0.7);
+  text-align: center;
+}
+
+.stat-counter span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+}
+
+.stat-counter strong {
+  display: block;
+  margin-top: 1px;
+  font-size: 1.45rem;
+}
+
+.game-card {
+  padding: clamp(20px, 4vw, 42px);
+  border: 1px solid rgb(255 255 255 / 0.9);
+  border-radius: 28px;
+  background: rgb(255 255 255 / 0.76);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(12px);
+}
+
+.status {
+  min-height: 1.5em;
+  margin-bottom: clamp(24px, 4vw, 38px);
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.status.is-error {
+  color: #b33f45;
+  animation: status-shake 250ms ease;
+}
+
+.tube-board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(72px, 1fr));
+  justify-items: center;
+  gap: clamp(26px, 5vw, 48px) clamp(12px, 3vw, 28px);
+  max-width: 700px;
+  min-height: 310px;
+  margin: 0 auto;
+}
+
+.tube-button {
+  position: relative;
+  width: clamp(42px, 6.7vw, 56px);
+  height: clamp(188px, 25vw, 226px);
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 180ms ease;
+}
+
+.tube-button:hover {
+  transform: translateY(-4px);
+}
+
+.tube-button.is-selected {
+  transform: translateY(-16px);
+}
+
+.tube-button.is-pouring {
+  animation: tube-pour 360ms ease;
+}
+
+.result-effect {
+  position: absolute;
+  z-index: 8;
+  top: 30%;
+  left: 50%;
+  width: clamp(62px, 10vw, 88px);
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(0 7px 8px rgb(25 59 70 / 0.22));
+  animation: result-pop 720ms cubic-bezier(.2, .9, .32, 1.35) both;
+}
+
+.tube {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+  overflow: hidden;
+  border: 4px solid rgb(139 181 193 / 0.52);
+  border-top: 0;
+  border-radius: 8px 8px 34px 34px;
+  background: linear-gradient(90deg, rgb(255 255 255 / 0.9), rgb(213 237 243 / 0.24) 47%, rgb(255 255 255 / 0.78));
+  box-shadow:
+    inset 9px 0 10px rgb(255 255 255 / 0.68),
+    inset -7px 0 10px rgb(114 169 185 / 0.12),
+    inset 0 -10px 14px rgb(92 147 162 / 0.12),
+    0 12px 20px rgb(45 83 94 / 0.13);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.tube::before {
+  content: "";
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 50%;
+  width: calc(100% + 13px);
+  height: 9px;
+  border: 4px solid rgb(139 181 193 / 0.52);
+  border-radius: 50%;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.95), rgb(209 235 241 / 0.68));
+  box-shadow: inset 0 2px 3px rgb(82 134 149 / 0.18), 0 2px 4px rgb(45 83 94 / 0.08);
+  transform: translate(-50%, -50%);
+  transition: border-color 180ms ease;
+}
+
+/* ガラス表面の反射。液体の色を隠さない程度に薄く重ねます。 */
+.tube::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: 9px 8px 15px 7px;
+  border-radius: 10px 8px 27px 25px;
+  background:
+    linear-gradient(100deg, rgb(255 255 255 / 0.55) 0 8%, transparent 14% 72%, rgb(255 255 255 / 0.18) 82% 90%, transparent 96%);
+  pointer-events: none;
+}
+
+.tube-button.is-selected .tube,
+.tube-button.is-selected .tube::before {
+  border-color: var(--accent);
+}
+
+.tube-button.is-selected .tube {
+  box-shadow: 0 0 0 5px rgb(22 136 165 / 0.12), 0 14px 24px rgb(22 136 165 / 0.18);
+}
+
+/* 完成した試験管は、演出後も緑の縁とチェック印で区別します。 */
+.tube-button.is-complete .tube,
+.tube-button.is-complete .tube::before {
+  border-color: rgb(38 167 125 / 0.78);
+}
+
+.tube-button.is-complete .tube {
+  box-shadow:
+    inset 9px 0 10px rgb(255 255 255 / 0.68),
+    inset -7px 0 10px rgb(38 167 125 / 0.12),
+    0 0 0 4px rgb(38 167 125 / 0.1),
+    0 12px 22px rgb(38 120 94 / 0.2);
+}
+
+.tube-button.is-complete::after {
+  content: "✓";
+  position: absolute;
+  z-index: 7;
+  top: 5px;
+  right: -11px;
+  display: grid;
+  place-items: center;
+  width: 25px;
+  height: 25px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  color: #fff;
+  background: #26a77d;
+  box-shadow: 0 5px 12px rgb(25 90 70 / 0.28);
+  font-size: 0.82rem;
+  font-weight: 900;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.liquid-layer {
+  position: relative;
+  z-index: 1;
+  flex: 0 0 20%;
+  width: 100%;
+  background-color: var(--liquid-color);
+  box-shadow:
+    inset 0 2px rgb(255 255 255 / 0.22),
+    inset 8px 0 10px rgb(255 255 255 / 0.12),
+    inset -7px 0 9px rgb(0 0 0 / 0.06);
+}
+
+.liquid-layer:last-child {
+  border-radius: 4px 4px 0 0;
+}
+
+.tube-number {
+  position: absolute;
+  right: 0;
+  bottom: -23px;
+  left: 0;
+  color: #8aa0a8;
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: clamp(48px, 7vw, 68px);
+}
+
+.control-button {
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 1px solid #b6ccd3;
+  border-radius: 999px;
+  color: var(--ink);
+  background: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 150ms ease, border-color 150ms ease, background-color 150ms ease;
+}
+
+.control-button:hover:not(:disabled),
+.control-button:focus-visible {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  outline: none;
+}
+
+.control-button.primary {
+  border-color: var(--accent);
+  color: #fff;
+  background: var(--accent);
+}
+
+.control-button.primary:hover,
+.control-button.primary:focus-visible {
+  background: var(--accent-dark);
+}
+
+.control-button:disabled {
+  color: #9fafb5;
+  background: #edf2f3;
+  cursor: not-allowed;
+}
+
+.tip {
+  margin: 18px 0 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+.clear-dialog {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgb(226 244 247 / 0.72);
+  backdrop-filter: blur(10px);
+  animation: dialog-in 240ms ease both;
+}
+
+.clear-dialog[hidden] {
+  display: none;
+}
+
+.clear-panel {
+  width: min(360px, 100%);
+  padding: 36px;
+  border: 1px solid #d2e4e8;
+  border-radius: 24px;
+  background: #fff;
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+.clear-mark {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  color: #fff;
+  background: #26a77d;
+  font-size: 1.8rem;
+}
+
+.clear-panel h2 {
+  margin: 0;
+  color: var(--accent-dark);
+  font-size: 2.3rem;
+  letter-spacing: 0.08em;
+}
+
+.clear-panel p {
+  margin: 8px 0 24px;
+  color: var(--muted);
+}
+
+.clear-panel .clear-score {
+  display: grid;
+  gap: 2px;
+  margin: -10px 0 8px;
+  color: var(--accent-dark);
+  font-weight: 800;
+}
+
+.clear-score span {
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+}
+
+.clear-score strong {
+  font-size: 2.25rem;
+  line-height: 1.1;
+}
+
+.clear-panel .score-breakdown {
+  margin: 0 0 24px;
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.7;
+}
+
+@keyframes tube-pour {
+  50% { transform: translateY(-18px) rotate(5deg); }
+}
+
+@keyframes result-pop {
+  0% { opacity: 0; transform: translate(-50%, 12px) scale(0.25) rotate(-8deg); }
+  38% { opacity: 1; transform: translate(-50%, -15px) scale(1.18) rotate(4deg); }
+  62% { opacity: 1; transform: translate(-50%, -10px) scale(0.96) rotate(0); }
+  100% { opacity: 0; transform: translate(-50%, -24px) scale(1.04); }
+}
+
+@keyframes status-shake {
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+@keyframes dialog-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (max-width: 620px) {
+  .game-shell {
+    width: min(100% - 20px, 520px);
+    padding-top: 24px;
+  }
+
+  .game-header {
+    align-items: center;
+  }
+
+  .game-stats {
+    flex-direction: column;
+  }
+
+  .stat-counter {
+    min-width: 72px;
+    padding: 6px 10px;
+  }
+
+  .stat-counter strong {
+    font-size: 1.18rem;
+  }
+
+  .instructions {
+    max-width: 260px;
+  }
+
+  .game-card {
+    padding: 20px 10px 24px;
+    border-radius: 22px;
+  }
+
+  .tube-board {
+    grid-template-columns: repeat(4, minmax(58px, 1fr));
+    gap: 36px 4px;
+    min-height: 0;
+  }
+
+  .tube-button {
+    width: clamp(36px, 11.3vw, 48px);
+    height: clamp(158px, 47vw, 200px);
+  }
+
+  .controls {
+    margin-top: 52px;
+  }
+
+  .control-button {
+    padding-right: 14px;
+    padding-left: 14px;
+    font-size: 0.86rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 1ms !important;
+    transition-duration: 1ms !important;
+  }
+}

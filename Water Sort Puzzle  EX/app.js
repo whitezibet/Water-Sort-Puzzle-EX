@@ -275,7 +275,7 @@ function selectTube(tubeIndex) {
   const move = getValidMove(tubes, fromIndex, tubeIndex);
   if (!move) {
     selectedTubeIndex = tubes[tubeIndex].length > 0 ? tubeIndex : fromIndex;
-    registerMistake(tubeIndex, "そこには移せません。お手つきとして記録しました");
+    registerMistake(tubeIndex, "そこには移せません。");
     return;
   }
 

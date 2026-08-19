@@ -255,7 +255,7 @@ function selectTube(tubeIndex) {
 
   if (selectedTubeIndex === null) {
     if (tubes[tubeIndex].length === 0) {
-      registerMistake(tubeIndex, "移動できません。お手つきとして記録しました");
+      registerMistake(tubeIndex, "移動できません。");
       return;
     }
     selectedTubeIndex = tubeIndex;
